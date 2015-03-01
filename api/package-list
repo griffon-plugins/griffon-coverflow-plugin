@@ -1,0 +1,7 @@
+com.blogofbug.swing
+com.blogofbug.swing.borders
+com.blogofbug.swing.components
+com.blogofbug.swing.layout
+com.blogofbug.utility
+griffon.plugins.coverflow.ui
+org.codehaus.griffon.runtime.coverflow.swing

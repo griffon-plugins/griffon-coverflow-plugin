@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.2">
+<meta name="author" content="Andres Almiray">
+<title>Griffon Coverflow Plugin</title>
+<link rel="stylesheet" href="./css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="./coderay-asciidoctor.css">
+</head>
+<body class="book toc2 toc-left">
+<div id="header">
+<h1>Griffon Coverflow Plugin</h1>
+<div class="details">
+<span id="author" class="author">Andres Almiray</span><br>
+<span id="revnumber">version 1.0.0</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_introduction">1. Introduction</a>
+<ul class="sectlevel2">
+<li><a href="#_example">1.1. Example</a></li>
+</ul>
+</li>
+<li><a href="#_configuration">2. Configuration</a>
+<ul class="sectlevel2">
+<li><a href="#_gradle">2.1. Gradle</a>
+<ul class="sectlevel3">
+<li><a href="#_automatic">2.1.1. Automatic</a></li>
+<li><a href="#_manual">2.1.2. Manual</a></li>
+</ul>
+</li>
+<li><a href="#_maven">2.2. Maven</a></li>
+</ul>
+</li>
+<li><a href="#_modules">3. Modules</a>
+<ul class="sectlevel2">
+<li><a href="#_swing">3.1. Swing</a>
+<ul class="sectlevel3">
+<li><a href="#_nodes">3.1.1. Nodes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_links">4. Links</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_introduction"><a class="anchor" href="#_introduction"></a>1. Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This plugin provides a <strong>coverflow</strong> component useful for displaying an image set. The component is based on Romain Guy&#8217;s
+work explained at <a href="http://www.curious-creature.org/2005/07/09/a-music-shelf-in-java2d" target="_blank">A Music Shelf in Java2D</a>. In 2008 Kevin Long refactored the code to be more generic and component-like.
+See <a href="http://blog.codebeach.com/2008/02/imageflow-swing-component.html" target="_blank">ImageFlow Swing Component</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="_example"><a class="anchor" href="#_example"></a>1.1. Example</h3>
+<div class="paragraph">
+<p>Here&#8217;s a basic usage of the coverflow components in a Groovy view</p>
+</div>
+<div class="listingblock">
+<div class="title">org.example.SampleView.groovy</div>
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="groovy"><span class="keyword">package</span> org.example
+
+<span class="keyword">import</span> <span class="include">griffon.core.artifact.GriffonView</span>
+<span class="keyword">import</span> <span class="include">griffon.metadata.ArtifactProviderFor</span>
+<span class="keyword">import</span> <span class="include">javax.swing.SwingConstants</span>
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">java.awt.BorderLayout.*</span>
+
+<span class="annotation">@ArtifactProviderFor</span>(GriffonView)
+<span class="type">class</span> <span class="class">SampleView</span> {
+  FactoryBuilderSupport builder
+
+  <span class="type">void</span> initUI() {
+    builder.with {
+      application(<span class="key">size</span>: [<span class="integer">520</span>, <span class="integer">320</span>], <span class="key">id</span>: <span class="string"><span class="delimiter">'</span><span class="content">mainWindow</span><span class="delimiter">'</span></span>,
+          <span class="key">title</span>: application.configuration[<span class="string"><span class="delimiter">'</span><span class="content">application.title</span><span class="delimiter">'</span></span>],
+          <span class="key">iconImage</span>:   imageIcon(<span class="string"><span class="delimiter">'</span><span class="content">/griffon-icon-48x48.png</span><span class="delimiter">'</span></span>).image,
+          <span class="key">iconImages</span>: [imageIcon(<span class="string"><span class="delimiter">'</span><span class="content">/griffon-icon-48x48.png</span><span class="delimiter">'</span></span>).image,
+                       imageIcon(<span class="string"><span class="delimiter">'</span><span class="content">/griffon-icon-32x32.png</span><span class="delimiter">'</span></span>).image,
+                        imageIcon(<span class="string"><span class="delimiter">'</span><span class="content">/griffon-icon-16x16.png</span><span class="delimiter">'</span></span>).image]) {
+        borderLayout()
+        panel(<span class="key">constraints</span>: CENTER) {
+          stackLayout()
+          gradientPanel(<span class="key">constraints</span>: BOTTOM)
+          imageFlow(<span class="key">id</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">flow</span><span class="delimiter">&quot;</span></span>, <span class="key">constraints</span>: TOP) {
+            (<span class="integer">1</span>..<span class="integer">10</span>). each { i -&gt;
+              imageFlowItem(<span class="key">resource</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">/griffon-icon-128x128.png</span><span class="delimiter">&quot;</span></span>, <span class="key">label</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Icon </span><span class="inline"><span class="inline-delimiter">$</span>i</span><span class="delimiter">&quot;</span></span>)
+            }
+          }
+        }
+        panel(<span class="key">constraints</span>: WEST) {
+          borderLayout()
+          button(<span class="string"><span class="delimiter">&quot;</span><span class="content">&lt;</span><span class="delimiter">&quot;</span></span>,  <span class="key">actionPerformed</span>: { flow.previous() })
+        }
+        panel(<span class="key">constraints</span>: EAST) {
+          borderLayout()
+          button(<span class="string"><span class="delimiter">&quot;</span><span class="content">&gt;</span><span class="delimiter">&quot;</span></span>,  <span class="key">actionPerformed</span>: { flow.next() })
+        }
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Which results in the following screen</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/griffon-coverflow.png" alt="griffon coverflow">
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configuration"><a class="anchor" href="#_configuration"></a>2. Configuration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The plugin delivers artifacts for both Swing and JavaFX. It also contains Groovy enhancements
+that can be used in combination with the respective UI toolkit DSL (SwingBuilder and GroovyFX).</p>
+</div>
+<div class="sect2">
+<h3 id="_gradle"><a class="anchor" href="#_gradle"></a>2.1. Gradle</h3>
+<div class="paragraph">
+<p>You have two options for configuring this plugin: automatic and manual.</p>
+</div>
+<div class="sect3">
+<h4 id="_automatic"><a class="anchor" href="#_automatic"></a>2.1.1. Automatic</h4>
+<div class="paragraph">
+<p>As long as the project has the <code>org.codehaus.griffon.griffon</code> plugin applied to it you
+may include the following snippet in <code>build.gradle</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="groovy">dependencies {
+    griffon 'org.codehaus.griffon.plugins:griffon-coverflow-plugin:1.0.0'
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>griffon</code> plugin will take care of the rest given its configuration.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_manual"><a class="anchor" href="#_manual"></a>2.1.2. Manual</h4>
+<div class="paragraph">
+<p>You will need to configure any of the following blocks depending on your setup</p>
+</div>
+<div class="listingblock">
+<div class="title">Java + Swing</div>
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="groovy">dependencies {
+    compile 'org.codehaus.griffon.plugins:griffon-coverflow-swing:1.0.0'
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Groovy + Swing</div>
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="groovy">dependencies {
+    compile 'org.codehaus.griffon.plugins:griffon-coverflow-swing-groovy:1.0.0'
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_maven"><a class="anchor" href="#_maven"></a>2.2. Maven</h3>
+<div class="paragraph">
+<p>First configure the <code>griffon-coverflow-plugin</code> BOM in your POM file, by placing the following
+snippet before the <code>&lt;build&gt;</code> element</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="xml"><span class="tag">&lt;dependencyManagement&gt;</span>
+    <span class="tag">&lt;dependencies&gt;</span>
+        <span class="tag">&lt;dependency&gt;</span>
+            <span class="tag">&lt;groupId&gt;</span>org.codehaus.griffon.plugins<span class="tag">&lt;/groupId&gt;</span>
+            <span class="tag">&lt;artifactId&gt;</span>griffon-coverflow-plugin<span class="tag">&lt;/artifactId&gt;</span>
+            <span class="tag">&lt;version&gt;</span>1.0.0<span class="tag">&lt;/version&gt;</span>
+            <span class="tag">&lt;type&gt;</span>pom<span class="tag">&lt;/type&gt;</span>
+            <span class="tag">&lt;scope&gt;</span>import<span class="tag">&lt;/scope&gt;</span>
+        <span class="tag">&lt;/dependency&gt;</span>
+    <span class="tag">&lt;/dependencies&gt;</span>
+<span class="tag">&lt;/dependencyManagement&gt;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next configure dependencies as required by your particular setup</p>
+</div>
+<div class="listingblock">
+<div class="title">Java + Swing</div>
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
+    <span class="tag">&lt;groupId&gt;</span>org.codehaus.griffon.plugins<span class="tag">&lt;/groupId&gt;</span>
+    <span class="tag">&lt;artifactId&gt;</span>griffon-coverflow-swing<span class="tag">&lt;/artifactId&gt;</span>
+<span class="tag">&lt;/dependency&gt;</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Groovy + Swing</div>
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
+    <span class="tag">&lt;groupId&gt;</span>org.codehaus.griffon.plugins<span class="tag">&lt;/groupId&gt;</span>
+    <span class="tag">&lt;artifactId&gt;</span>griffon-coverflow-swing-groovy<span class="tag">&lt;/artifactId&gt;</span>
+<span class="tag">&lt;/dependency&gt;</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_modules"><a class="anchor" href="#_modules"></a>3. Modules</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following sections display all bindings per module. Use this information to
+successfully override a binding on your own modules or to troubleshoot a module
+binding if the wrong type has been applied by the Griffon runtime.</p>
+</div>
+<div class="sect2">
+<h3 id="_swing"><a class="anchor" href="#_swing"></a>3.1. Swing</h3>
+<div class="paragraph">
+<p>Module name: <code>coverflow-swing-groovy</code></p>
+</div>
+<div class="paragraph">
+<p>Depends on: <code>swing-groovy</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Unresolved directive in modules.adoc - include::../../../../subprojects/griffon-coverflow-swing-groovy/src/main/groovy/org/codehaus/griffon/runtime/swing/coverflow/CoverflowSwingGroovyModule.java[tags=bindings,indent=<span class="integer">0</span>]</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_nodes"><a class="anchor" href="#_nodes"></a>3.1.1. Nodes</h4>
+<div class="paragraph">
+<p>The following nodes will become available on a Groovy View</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. stacklayout</caption>
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Default</th>
+<th class="tableblock halign-left valign-top">Bindable</th>
+<th class="tableblock halign-left valign-top">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">exposes BOTTOM and TOP as constraints</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 2. gradientPanel</caption>
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Default</th>
+<th class="tableblock halign-left valign-top">Bindable</th>
+<th class="tableblock halign-left valign-top">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">gradientStart</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Color</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Color(110, 110, 110)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">yes</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">gradientEnd</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Color</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Color(0, 0, 0)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">yes</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 3. imageFlow</caption>
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Default</th>
+<th class="tableblock halign-left valign-top">Bindable</th>
+<th class="tableblock halign-left valign-top">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">items</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ImageFlowItem[]</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">no</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">alternate values may be of type <code>List&lt;ImageFlowItem&gt;</code>, <code>ListModel</code> or <code>ImageFlow</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">amount</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">yes</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sigma</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">double</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">yes</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">itemFont</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Font</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Font("Dialog", Font.PLAIN, 24)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">yes</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">itemTextColor</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Color</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Color.WHITE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">yes</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">itemSpacing</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">double</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">yes</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 4. imageFlowItem</caption>
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Default</th>
+<th class="tableblock halign-left valign-top">Bindable</th>
+<th class="tableblock halign-left valign-top">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">file</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">File</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">no</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">value can be a String. Alternate to url:, image:, inputStream:, resource:</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">url</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">URL</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">no</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">value can be a String. Alternate to file:, image:, inputStream:, resource:</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">image</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Image</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">no</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">value can be a String. Alternate to file:, url:, inputStream:, resource:</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">inputStream</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">InputStream</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">no</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Alternate to file:, url:, image:, resource:</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">resource</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">no</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Alternate to file:, url:, image:, inputStream:</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_links"><a class="anchor" href="#_links"></a>4. Links</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="api/index.html">Javadoc</a></p>
+</div>
+<div class="paragraph">
+<p><a href="api-src/index.html">API Sources</a></p>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 1.0.0<br>
+Last updated 2015-02-24 15:59:52 CET
+</div>
+</div>
+</body>
+</html>
