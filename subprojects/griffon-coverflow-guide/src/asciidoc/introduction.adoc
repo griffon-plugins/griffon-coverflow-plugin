@@ -1,0 +1,62 @@
+
+[[_introduction]]
+= Introduction
+
+This plugin provides a *coverflow* component useful for displaying an image set. The component is based on Romain Guy's
+work explained at {link-romain}. In 2008 Kevin Long refactored the code to be more generic and component-like.
+See {link-kevin}.
+
+== Example
+
+Here's a basic usage of the coverflow components in a Groovy view
+
+[source,groovy,options="nowrap"]
+.org.example.SampleView.groovy
+----
+package org.example
+
+import griffon.core.artifact.GriffonView
+import griffon.metadata.ArtifactProviderFor
+import javax.swing.SwingConstants
+import static java.awt.BorderLayout.*
+
+@ArtifactProviderFor(GriffonView)
+class SampleView {
+  FactoryBuilderSupport builder
+
+  void initUI() {
+    builder.with {
+      application(size: [520, 320], id: 'mainWindow',
+          title: application.configuration['application.title'],
+          iconImage:   imageIcon('/griffon-icon-48x48.png').image,
+          iconImages: [imageIcon('/griffon-icon-48x48.png').image,
+                       imageIcon('/griffon-icon-32x32.png').image,
+                        imageIcon('/griffon-icon-16x16.png').image]) {
+        borderLayout()
+        panel(constraints: CENTER) {
+          stackLayout()
+          gradientPanel(constraints: BOTTOM)
+          imageFlow(id: "flow", constraints: TOP) {
+            (1..10). each { i ->
+              imageFlowItem(resource: "/griffon-icon-128x128.png", label: "Icon $i")
+            }
+          }
+        }
+        panel(constraints: WEST) {
+          borderLayout()
+          button("<",  actionPerformed: { flow.previous() })
+        }
+        panel(constraints: EAST) {
+          borderLayout()
+          button(">",  actionPerformed: { flow.next() })
+        }
+      }
+    }
+  }
+}
+----
+
+Which results in the following screen
+
+image::griffon-coverflow.png[]
+

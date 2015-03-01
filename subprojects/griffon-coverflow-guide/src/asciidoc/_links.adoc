@@ -1,0 +1,3 @@
+
+:link-romain: link:http://www.curious-creature.org/2005/07/09/a-music-shelf-in-java2d[A Music Shelf in Java2D, window="_blank"]
+:link-kevin: link:http://blog.codebeach.com/2008/02/imageflow-swing-component.html[ImageFlow Swing Component, window="_blank"]

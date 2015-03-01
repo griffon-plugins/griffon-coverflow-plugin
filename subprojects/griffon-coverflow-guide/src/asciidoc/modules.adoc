@@ -1,0 +1,64 @@
+
+[[_modules]]
+= Modules
+:subproject-base: {rootdir}/subprojects/griffon-coverflow-
+:java-source: /src/main/java/
+:groovy-source: /src/main/groovy/
+:package-base: org/codehaus/griffon/runtime/
+:numbered:
+
+The following sections display all bindings per module. Use this information to
+successfully override a binding on your own modules or to troubleshoot a module
+binding if the wrong type has been applied by the Griffon runtime.
+
+== Swing
+
+Module name: `coverflow-swing-groovy`
+
+Depends on: `swing-groovy`
+
+[source,java,options="nowrap"]
+----
+include::{subproject-base}swing-groovy{groovy-source}{package-base}swing/coverflow/CoverflowSwingGroovyModule.java[tags=bindings,indent=0]
+----
+
+=== Nodes 
+The following nodes will become available on a Groovy View
+
+.stacklayout
+[options="5*,header"]
+|===
+| Property      | Type            | Default                        | Bindable | Notes
+|               |                 |                                |          | exposes BOTTOM and TOP as constraints
+|===
+
+.gradientPanel
+[options="5*,header"]
+|===
+| Property      | Type            | Default                        | Bindable | Notes
+| gradientStart | Color           | Color(110, 110, 110)           | yes      |
+| gradientEnd   | Color           | Color(0, 0, 0)                 | yes      |
+|===
+
+.imageFlow
+[options="5*,header"]
+|===
+| Property      | Type            | Default                        | Bindable | Notes
+| items         | ImageFlowItem[] |                                | no       | alternate values may be of type `List<ImageFlowItem>`, `ListModel` or `ImageFlow`
+| amount        | int             | 5                              | yes      |
+| sigma         | double          |                                | yes      |
+| itemFont      | Font            | Font("Dialog", Font.PLAIN, 24) | yes      |
+| itemTextColor | Color           | Color.WHITE                    | yes      |
+| itemSpacing   | double          | 0.4                            | yes      |
+|===
+
+.imageFlowItem
+[options="5*,header"]
+|===
+| Property      | Type            | Default                        | Bindable | Notes
+| file          | File            |                                | no       | value can be a String. Alternate to url:, image:, inputStream:, resource:
+| url           | URL             |                                | no       | value can be a String. Alternate to file:, image:, inputStream:, resource:
+| image         | Image           |                                | no       | value can be a String. Alternate to file:, url:, inputStream:, resource:
+| inputStream   | InputStream     |                                | no       | Alternate to file:, url:, image:, resource:
+| resource      | String          |                                | no       | Alternate to file:, url:, image:, inputStream:
+|===

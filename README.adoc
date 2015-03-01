@@ -1,0 +1,20 @@
+= griffon-coverflow-plugin
+:linkattrs:
+:project-name: griffon-coverflow-plugin
+
+image:http://img.shields.io/travis/griffon-plugins/{project-name}/master.svg["Build Status", link="https://travis-ci.org/griffon-plugins/{project-name}"]
+image:http://img.shields.io/coveralls/griffon-plugins/{project-name}/master.svg["Coverage Status", link="https://coveralls.io/r/griffon-plugins/{project-name}"]
+image:http://img.shields.io/badge/license-ASF2-blue.svg["Apache License 2", link="http://www.apache.org/licenses/LICENSE-2.0.txt"]
+image:https://api.bintray.com/packages/griffon/griffon-plugins/{project-name}/images/download.svg[link="https://bintray.com/griffon/griffon-plugins/{project-name}/_latestVersion"]
+
+:link-romain: link:http://www.curious-creature.org/2005/07/09/a-music-shelf-in-java2d[A Music Shelf in Java2D, window="_blank"]
+:link-kevin: link:http://blog.codebeach.com/2008/02/imageflow-swing-component.html[ImageFlow Swing Component, window="_blank"]
+
+---
+
+This plugin provides a *coverflow* component useful for displaying an image set. The component is based on Romain Guy's
+work explained at {link-romain}. In 2008 Kevin Long refactored the code to be more generic and component-like.
+See {link-kevin}.
+
+Refer to the link:http://griffon-plugins.github.io/{project-name}/[plugin guide, window="_blank"] for
+further information on configuration and usage.
