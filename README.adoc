@@ -12,6 +12,11 @@ image:https://api.bintray.com/packages/griffon/griffon-plugins/{project-name}/im
 
 ---
 
+image:https://img.shields.io/gitter/room/griffon/griffon.js.svg[link="https://gitter.im/griffon/griffon]
+image:https://img.shields.io/badge/donations-Patreon-orange.svg[https://www.patreon.com/user?u=6609318]
+
+---
+
 This plugin provides a *coverflow* component useful for displaying an image set. The component is based on Romain Guy's
 work explained at {link-romain}. In 2008 Kevin Long refactored the code to be more generic and component-like.
 See {link-kevin}.

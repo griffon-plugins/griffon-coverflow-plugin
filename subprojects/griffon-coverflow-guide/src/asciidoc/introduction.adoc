@@ -60,3 +60,5 @@ Which results in the following screen
 
 image::griffon-coverflow.png[]
 
+Griffon version: {griffon-version}
+
