@@ -19,7 +19,7 @@ Depends on: `swing-groovy`
 
 [source,java,options="nowrap"]
 ----
-include::{subproject-base}swing-groovy{groovy-source}{package-base}swing/coverflow/CoverflowSwingGroovyModule.java[tags=bindings,indent=0]
+include::{subproject-base}swing-groovy{groovy-source}{package-base}coverflow/swing/CoverflowSwingGroovyModule.java[tags=bindings,indent=0]
 ----
 
 === Nodes 
