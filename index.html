@@ -239,7 +239,9 @@ binding if the wrong type has been applied by the Griffon runtime.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="java">Unresolved directive in modules.adoc - include::../../../../subprojects/griffon-coverflow-swing-groovy/src/main/groovy/org/codehaus/griffon/runtime/swing/coverflow/CoverflowSwingGroovyModule.java[tags=bindings,indent=<span class="integer">0</span>]</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">bind(BuilderCustomizer.class)
+    .to(CoverflowSwingBuilderCustomizer.class)
+    .asSingleton();</code></pre>
 </div>
 </div>
 <div class="sect3">
